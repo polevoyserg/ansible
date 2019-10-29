@@ -1,0 +1,53 @@
+# changes incompatibly
+LCONF_VERSION = "7"
+TOPDIR := "${@os.path.dirname(os.path.dirname(d.getVar('FILE', True)))}"
+
+BBPATH = "${TOPDIR}"
+
+BBFILES = ""
+
+# These layers hold recipe metadata not found in OE-core, but lack any machine or distro content
+BASELAYERS ?= " \
+  ${TOPDIR}/layers/meta-openembedded/meta-oe \
+  ${TOPDIR}/layers/meta-openembedded/meta-gnome \
+  ${TOPDIR}/layers/meta-openembedded/meta-initramfs \
+  ${TOPDIR}/layers/meta-openembedded/meta-multimedia \
+  ${TOPDIR}/layers/meta-openembedded/meta-networking \
+  ${TOPDIR}/layers/meta-openembedded/meta-webserver \
+  ${TOPDIR}/layers/meta-openembedded/meta-filesystems \
+  ${TOPDIR}/layers/meta-openembedded/meta-perl \
+  ${TOPDIR}/layers/meta-openembedded/meta-python \
+  ${TOPDIR}/layers/meta-java \
+  ${TOPDIR}/layers/meta-rust \
+  ${TOPDIR}/layers/meta-browser \
+  ${TOPDIR}/layers/meta-mono \
+  ${TOPDIR}/layers/meta-virtualization \
+  ${TOPDIR}/layers/meta-security \
+  ${TOPDIR}/layers/meta-backports \
+"
+
+# These layers hold machine specific content, aka Board Support Packages
+BSPLAYERS ?= " \
+  ${TOPDIR}/layers/meta-intel \
+  ${TOPDIR}/layers/meta-raspberrypi \
+  ${TOPDIR}/layers/meta-dominion \
+  ${TOPDIR}/layers/meta-yocto/meta-yocto-bsp \
+"
+
+# Add your overlay location to EXTRALAYERS
+# Make sure to have a conf/layers.conf in there
+EXTRALAYERS ?= " \
+  ${TOPDIR}/layers/meta-linaro/meta-linaro \
+  ${TOPDIR}/layers/meta-linaro/meta-linaro-toolchain \
+  ${TOPDIR}/layers/meta-linaro/meta-aarch64 \
+"
+# This was the last line of of EXTRALAYERS if you want to activate it again.
+#  ${TOPDIR}/layers/meta-clang
+
+BBLAYERS = " \
+  ${TOPDIR}/layers/meta-sicom \
+  ${BASELAYERS} \
+  ${BSPLAYERS} \
+  ${EXTRALAYERS} \
+  ${TOPDIR}/layers/openembedded-core/meta \
+"

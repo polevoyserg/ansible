@@ -1,7 +1,7 @@
 ---
 
-- name: Put /etc/mongod.conf
-  template: src=/ansible/roles/new_centos_server/templates/bblayers.conf.j2 dest=/sicom3/conf/bblayers.conf mode=0644
+- name: Put bblayers.conf
+  template: src=/ansible/playbooks/roles/new_centos_server/templates/bblayers.conf.j2 dest=/sicom3/conf/bblayers.conf mode=0644
 
 
 - name: run build!!!
