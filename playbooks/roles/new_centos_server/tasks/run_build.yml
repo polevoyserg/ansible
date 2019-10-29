@@ -1,0 +1,34 @@
+---
+
+- name: Put /etc/mongod.conf
+  template: src=/ansible/roles/new_centos_server/templates/bblayers.conf.j2 dest=/sicom3/conf/bblayers.conf mode=0644
+
+
+- name: run build!!!
+  become: Yes
+  become_user: provision
+  shell: cat ./layers/meta-sicom/setup-env-centos.sh > ./layers/meta-sicom/run.build; cat ./layers/meta-sicom/build-for-dtd.sh >> ./layers/meta-sicom/run.build; chmod +x ./layers/meta-sicom/run.build; ./layers/meta-sicom/run.build linux-mainline #; ./layers/meta-sicom/build-for-pos.sh sicom-pos
+  args:
+        chdir: /sicom3/
+  ignore_errors: yes
+
+
+
+- name: run 2
+  become: Yes
+  become_user: provision
+  shell:  cat ./layers/meta-sicom/setup-env-centos.sh > ./layers/meta-sicom/run.build; cat ./layers/meta-sicom/build-for-pos.sh >> ./layers/meta-sicom/run.build; ./layers/meta-sicom/run.build sicom-pos
+  args: 
+        chdir: /sicom3/
+  ignore_errors: yes
+
+
+
+  #- name: run
+  #  become: Yes
+  #  become_user: provision
+  #  shell: source $HOME/.bash_profile;  ./layers/meta-sicom/build-for-pos.sh sicom-pos
+  #  args:
+  #        chdir: /sicom3/
+  # ignore_errors: yes
+

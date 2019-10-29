@@ -1,0 +1,5 @@
+--- 
+
+- name: install libselinux-python
+  selinux:
+    state: disabled

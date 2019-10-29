@@ -1,0 +1,119 @@
+---
+- name: mkdir ~/bin
+  become: true
+  become_user: provision
+  file: 
+   path: ~/bin
+   state: directory
+   recurse: yes
+   owner: provision
+   group: provision
+
+   #- name: Add a PATH entry with {{extrapath}} if the PATH is not already defined
+   #  become: true
+   #  become_user: provision
+   #  lineinfile:
+#    dest=/etc/environment
+#    state=present
+#    line="PATH=~/bin:$PATH"
+#    regexp=''
+#    insertafter=EOF
+#    when: checkIfPATHIsHere.changed == false
+
+
+
+- name: Download http://commondatastorage.googleapis.com/git-repo-downloads/repo
+  become: true
+  become_user: provision
+  get_url:
+    url: http://commondatastorage.googleapis.com/git-repo-downloads/repo
+    dest: ~/bin/repo
+
+- name: Changing perm of "~/bin/repo", adding "+x"
+  become: true
+  become_user: provision
+  file: dest=~/bin/repo mode=a+x    
+
+  #- name: create path 
+  #  file: 
+  #    path: /sicom3
+  #    state: directory
+    #    mode: '0777'
+
+- name: Change file ownership, group and permissions
+  file:
+    path: /sicom3
+    state: directory
+    owner: provision
+    group: provision
+    mode: '0777'
+
+
+
+- name: Create $PATH
+  become: true
+  become_user: provision
+  shell: PATH=~/bin:$PATH 
+
+    #- name: /root/.bashrc  full hostname tweak
+    #  become: true
+    #  become_user: provision
+    #    lineinfile: PATH=~/bin:$PATH
+
+
+
+- name: /etc/zabbix/zabbix_agentd.conf ServerActive
+  become: true
+  become_user: provision
+  replace: path=~/bin/repo regexp='#!/usr/bin/env python$' replace='#!/usr/bin/env python2'
+
+
+
+- name: yum install centos-release-scl-2-3.el7.centos.noarch.rpm 
+  yum:
+    name: http://mirror.centos.org/centos/7/extras/x86_64/Packages/centos-release-scl-2-3.el7.centos.noarch.rpm
+    state: present
+
+
+- name: yum install centos-release-scl-2-3.el7.centos.noarch.rpm 
+  yum:
+    name: http://mirror.centos.org/centos/7/extras/x86_64/Packages/centos-release-scl-rh-2-3.el7.centos.noarch.rpm
+    state: present
+
+
+- name: yum -y --enablerepo=centos-sclo-rh
+  yum_repository:
+    name: centos-sclo-rh
+    description: centos-sclo-rh
+    baseurl: http://mirrorlist.centos.org?arch=$basearch&release=7&repo=sclo-rh
+    gpgkey: file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-SCLo
+
+
+- name: install devtoolset-7 devtoolset-7-libatomic-devel
+  yum: pkg={{item}} state=present disable_gpg_check=yes update_cache=yes
+  with_items:
+   - devtoolset-7 
+   - devtoolset-7-libatomic-devel
+
+- name: yum-clean-metadata
+  command: yum clean metadata
+  args:
+    warn: no
+
+
+  
+
+
+
+
+- name: Remove repository (and clean up left-over metadata)
+  yum_repository:
+    name: sicom*
+    state: absent
+  notify: yum-clean-metadata
+
+
+- name: install devtoolset-7 devtoolset-7-libatomic-devel
+  yum: pkg={{item}} state=present disable_gpg_check=yes update_cache=yes
+  with_items:
+   - centos-release-scl

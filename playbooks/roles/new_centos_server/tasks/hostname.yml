@@ -1,0 +1,10 @@
+---
+
+  - name: hostname
+    hostname: name=dbservers
+#    hostname: name={{zabbix_host_name}}
+
+
+  - name: /root/.bashrc  full hostname tweak
+    lineinfile: path=/root/.bashrc line='export PS1=\'[\u@\H \W]# \''
+

@@ -1,0 +1,8 @@
+---
+
+- name: /etc/hosts  
+  blockinfile: path=/etc/hosts
+      path: /etc/hosts
+      block: |
+         {{ file_hosts }}
+

@@ -1,0 +1,67 @@
+#!/bin/bash
+#Client name
+CLIENT=$1 
+#DB name
+DB=$2
+#Backup directory
+BACKDIR="/var/backups/mongodb/$1"
+#Backup file name
+BACKFILE="$DB"_`date +"%Y%m%d%H%M"`
+#Backup files limit
+limit={{mongo_backup_count}}
+
+usage()
+{
+  echo -e '\033[0;32m'
+  echo '########################################################'
+  echo '##  Default backup path is /var/backups/mongodb/.     ##'
+  echo '##  You can change it edit parameter "BACKDIR"        ##'
+  echo '########################################################'
+  echo ''
+  echo '########################################################'
+  echo '##  Usage: mongo_backup.sh client_name db_name         #'       
+  echo '########################################################'
+  echo ''
+}
+
+# Check input
+if [ $# -lt 2 ] ; then
+  usage
+  echo -e '\033[0;31m' 'Invalid input parameters'
+  echo -e "\e[0m"
+  exit 1
+fi
+
+check_dir()
+{
+  if [ -d $BACKDIR ]
+  then
+    echo "Backup directory found"
+  else
+    echo "Backup directory not found. Creating..."
+    mkdir -p $BACKDIR
+  fi
+}
+
+create_backup()
+{
+  /usr/bin/mongodump --archive=$BACKDIR/$BACKFILE.gz --gzip --db $DB 
+}
+
+clear_old_backups()
+{
+n=1
+for i in `ls $BACKDIR -t`
+do
+    if [ $n -gt $limit ]
+     then
+          rm -Rvf $BACKDIR/$i
+     fi
+    n=$(($n+1))
+done
+}
+
+check_dir ||  exit 1
+create_backup || exit 1
+clear_old_backups || exit 1
+echo "The backup was created".

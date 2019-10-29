@@ -1,0 +1,126 @@
+---
+
+- name: yum-epel
+  yum: name=epel-release state=latest
+ 
+- name: firewalld install
+  yum: name=firewalld state=installed     
+  when: ansible_distribution == 'CentOS' and ansible_distribution_major_version == '7'
+
+- name: firewalld off
+  service: name=firewalld state=stopped enabled=no
+  when: ansible_distribution == 'CentOS' and ansible_distribution_major_version == '7'
+
+- name: iptables install
+  yum: name=iptables-services state=installed
+
+
+
+- name: default
+  iptables_raw:
+    name: default
+    weight: 1
+    rules: '-A INPUT -m state --state RELATED,ESTABLISHED -j ACCEPT'
+
+- name: icmp
+  iptables_raw:
+    name: icmp
+    weight: 2
+    rules: '-A INPUT -p icmp -j ACCEPT'
+
+- name: localhost
+  iptables_raw:
+    name: localhost
+    weight: 3
+    rules: '-A INPUT -i lo -j ACCEPT'
+
+- name: ssh
+  iptables_raw:
+    name: ssh
+    weight: 4
+    rules: '-A INPUT -p tcp -m state --state NEW -m tcp --dport 22 -j ACCEPT'
+
+
+- name: iptables zabbix host allow
+  iptables_raw:
+    name: pfsoft_zabbix
+    rules: '-A INPUT -p tcp -m state -s 138.201.196.219 --state NEW -m tcp -j ACCEPT'
+
+- name: iptables pfsoft gateway 217.20.178.185
+  iptables_raw:
+    name: pfsoft_gateway1
+    rules: '-A INPUT -p tcp -m state -s 217.20.178.185 --state NEW -m tcp -j ACCEPT'
+
+- name: iptables pfsoft gateway 217.24.175.175
+  iptables_raw:
+    name: pfsoft_gateway2
+    rules: '-A INPUT -p tcp -m state -s 217.24.175.175 --state NEW -m tcp -j ACCEPT'
+
+- name: iptables pfsoft gateway 91.215.55.5
+  iptables_raw:
+    name: pfsoft_gateway3
+    rules: '-A INPUT -p tcp -m state -s 91.215.55.5 --state NEW -m tcp -j ACCEPT'
+
+- name: iptables pfsoft gateway 217.24.175.89
+  iptables_raw:
+    name: pfsoft_gateway4
+    rules: '-A INPUT -p tcp -m state -s 217.24.175.89 --state NEW -m tcp -j ACCEPT'
+
+- name: app1
+  iptables_raw:
+    name: app1
+    rules: '-A INPUT -p tcp -m state -s 127.0.0.1 --state NEW -m tcp -j ACCEPT'
+
+- name: app2
+  iptables_raw:
+    name: app2
+    rules: '-A INPUT -p tcp -m state -s 127.0.0.1 --state NEW -m tcp -j ACCEPT'
+
+- name: postgres
+  iptables_raw:
+    name: postgres
+    rules: '-A INPUT -p tcp -m state -s 127.0.0.1 --state NEW -m tcp --dport 5432 -j ACCEPT'
+
+- name: mongo
+  iptables_raw:
+    name: mongo
+    rules: '-A INPUT -p tcp -m state -s 127.0.0.1 --state NEW -m tcp --dport 27017 -j ACCEPT'
+
+
+- name: pfix
+  iptables_raw:
+    name: pfix
+    rules: '-A INPUT -p tcp -m state --state NEW -m tcp --dport 80 -j ACCEPT'
+
+- name: pfix_ssl
+  iptables_raw:
+    name: pfix_ssl
+    rules: '-A INPUT -p tcp -m state --state NEW -m tcp --dport 443 -j ACCEPT'
+
+- name: icmp_reject_input
+  iptables_raw:
+    name: icmp_reject_input
+    weight: 98
+    rules: '-A INPUT -j REJECT --reject-with icmp-host-prohibited'
+
+- name: icmp_reject_forward
+  iptables_raw:
+    name: icmp_reject_forward
+    weight: 99
+    rules: '-A FORWARD -j REJECT --reject-with icmp-host-prohibited'
+
+- name: iptables save
+  shell: service iptables save
+
+- name: iptables on
+  service: name=iptables state=started enabled=yes
+  when: iptables_enabled == "yes"
+
+- name: ip6tables on
+  service: name=ip6tables state=started enabled=yes
+  when: iptables_enabled == "yes"
+
+- name: iptables off
+  service: name=iptables state=stopped enabled=no
+  when: iptables_enabled == "no"
+

@@ -1,0 +1,43 @@
+---
+
+- name: run build
+  become: Yes
+  become_user: provision
+  args:
+        chdir:  /sicom3/bitbake
+  shell: cat ../layers/meta-sicom/patches/bitbake/0001-fetch2_npm-fix-parsing-multipl-matching-.patch | patch -p1
+  ignore_errors: yes
+
+- name: run build001
+  become: Yes
+  become_user: provision
+  args:
+        chdir: /sicom3/layers/openembedded-core
+  shell:  cat ../meta-sicom/patches/oe-core/0001-Record-PE-and-PR-values-for-shlib-dependencies.patch | patch -p1
+  ignore_errors: yes
+
+
+- name: run build002
+  become: Yes
+  become_user: provision
+  args:
+        chdir: /sicom3/layers/openembedded-core
+  shell: cat ../meta-sicom/patches/oe-core/0002-fix-dir-perms.patch | patch -p1
+  ignore_errors: yes
+
+- name: run build003
+  become: Yes
+  become_user: provision
+  args:
+        chdir: /sicom3/layers/openembedded-core
+  shell:  cat ../meta-sicom/patches/oe-core/0003-backport-meson.bbclass-thud-changes.patch | patch -p1
+  ignore_errors: yes
+
+- name: run build004
+  become: Yes
+  become_user: provision
+  args:
+        chdir: /sicom3/layers/openembedded-core
+  shell: cat ../meta-sicom/patches/oe-core/0004-mobile-broadband-provider-info.patch | patch -p1
+  ignore_errors: yes
+

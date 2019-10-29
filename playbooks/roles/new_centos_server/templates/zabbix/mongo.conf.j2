@@ -1,0 +1,9 @@
+UserParameter=mongodb.server.status[*], /etc/zabbix/scripts/zabbix_mongodb.py --host $1 --port $2 --status=true
+UserParameter=mongodb.server.statistics[*], /etc/zabbix/scripts/zabbix_mongodb.py --host $1 --port $2 --statistics=true
+UserParameter=mongodb.db.discovery[*], /etc/zabbix/scripts/zabbix_mongodb.py --host $1 --port $2 --discovery=true
+UserParameter=mongodb.db.storage.size[*], /etc/zabbix/scripts/zabbix_mongodb.py --host $1 --port $2 --db_status=true --database $3 --zabbix_item mongodb.db.storage.size
+UserParameter=mongodb.db.data.size[*], /etc/zabbix/scripts/zabbix_mongodb.py --host $1 --port $2 --db_status=true --database $3 --zabbix_item mongodb.db.data.size
+UserParameter=mongodb.db.index.size[*], /etc/zabbix/scripts/zabbix_mongodb.py --host $1 --port $2 --db_status=true --database $3 --zabbix_item mongodb.db.index.size
+UserParameter=mongodb.db.collections.count[*], /etc/zabbix/scripts/zabbix_mongodb.py --host $1 --port $2 --db_status=true --database $3 --zabbix_item mongodb.db.collections.count
+UserParameter=mongodb.db.objects.count[*], /etc/zabbix/scripts/zabbix_mongodb.py --host $1 --port $2 --db_status=true --database $3 --zabbix_item mongodb.db.objects.count
+UserParameter=mongodb.replica.role[*], /etc/zabbix/scripts/zabbix_mongodb.py --host $1 --port $2 --replica_status=true

@@ -1,0 +1,4 @@
+UserParameter=pgsql.status[*],/etc/zabbix/scripts/zabbix_postgresql.py --host $1 --port  $2 --user $3 --password $4 --get_data=true
+UserParameter=pgsql.db.discovery[*],/etc/zabbix/scripts/zabbix_postgresql.py --host $1 --port  $2 --user $3 --password $4 --db_discovery=true
+UserParameter=pgsql.db.size[*],/etc/zabbix/scripts/zabbix_postgresql.py --host $1 --port  $2 --user $3 --password $4 --database $5 --db_status=true --zabbix_item=pgsql.db.size
+UserParameter=pgsql.db.con.count[*],/etc/zabbix/scripts/zabbix_postgresql.py --host $1 --port  $2 --user $3 --password $4 --database $5 --db_status=true --zabbix_item=pgsql.db.con.count
