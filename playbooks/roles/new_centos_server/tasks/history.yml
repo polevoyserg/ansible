@@ -1,4 +1,0 @@
----
-
-- name: history
-  shell: if [ -z "`grep 'export HISTTIMEFORMAT="%d/%m/%y %T "' ~/.bash_profile`" ]; then echo 'export HISTTIMEFORMAT="%d/%m/%y %T "' >> ~/.bash_profile; fi

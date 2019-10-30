@@ -1,34 +1,29 @@
 ---
 
+- name: Replace string to http://ftp.hosteurope.de/mirror/archive.mariadb.org//mariadb-${PV}/source/mariadb-${PV}.tar.gz 
+  lineinfile:
+    dest: '{{build_directory}}/layers/meta-sicom/recipes-support/mariadb/mariadb_10.2.18.inc'
+    regexp: '^(.*)https://(.*)$'
+    line: 'SRC_URI = "http://ftp.hosteurope.de/mirror/archive.mariadb.org//mariadb-${PV}/source/mariadb-${PV}.tar.gz \ '
+    backrefs: yes
+
+
+    #- name: run script ./layers/meta-sicom/run.build linux-mainline
+    #  become: Yes
+    #  become_user: "{{username}}"
+    #  shell: cd {{build_directory}}; cat ./layers/meta-sicom/setup-env-centos.sh > ./layers/meta-sicom/run.build; cat ./layers/meta-sicom/build-for-dtd.sh >> ./layers/meta-sicom/run.build; chmod +x ./layers/meta-sicom/run.build; ./layers/meta-sicom/run.build linux-mainline &
+    #  ignore_errors: yes
+
+
 - name: Put bblayers.conf
-  template: src=/ansible/playbooks/roles/new_centos_server/templates/bblayers.conf.j2 dest=/sicom3/conf/bblayers.conf mode=0644
+  template: src=/ansible/playbooks/roles/new_centos_server/templates/bblayers.conf.j2 dest={{build_directory}}/conf/bblayers.conf mode=0644
 
 
-- name: run build!!!
+
+- name: run ./layers/meta-sicom/run.build sicom-pos
   become: Yes
-  become_user: provision
-  shell: cat ./layers/meta-sicom/setup-env-centos.sh > ./layers/meta-sicom/run.build; cat ./layers/meta-sicom/build-for-dtd.sh >> ./layers/meta-sicom/run.build; chmod +x ./layers/meta-sicom/run.build; ./layers/meta-sicom/run.build linux-mainline #; ./layers/meta-sicom/build-for-pos.sh sicom-pos
-  args:
-        chdir: /sicom3/
+  become_user: "{{username}}"
+  shell: cd {{build_directory}};  cat ./layers/meta-sicom/setup-env-centos.sh > ./layers/meta-sicom/run.build; cat ./layers/meta-sicom/build-for-pos.sh >> ./layers/meta-sicom/run.build; ./layers/meta-sicom/run.build sicom-pos
   ignore_errors: yes
 
-
-
-- name: run 2
-  become: Yes
-  become_user: provision
-  shell:  cat ./layers/meta-sicom/setup-env-centos.sh > ./layers/meta-sicom/run.build; cat ./layers/meta-sicom/build-for-pos.sh >> ./layers/meta-sicom/run.build; ./layers/meta-sicom/run.build sicom-pos
-  args: 
-        chdir: /sicom3/
-  ignore_errors: yes
-
-
-
-  #- name: run
-  #  become: Yes
-  #  become_user: provision
-  #  shell: source $HOME/.bash_profile;  ./layers/meta-sicom/build-for-pos.sh sicom-pos
-  #  args:
-  #        chdir: /sicom3/
-  # ignore_errors: yes
 

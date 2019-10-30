@@ -1,32 +1,29 @@
 ---
-#- hosts: all
-#  vars:
-#    - provision_password: '$6$w9S3t7x1kRtmG0u$6nVU9KZsC12Q8DYI4FtgKPy.e/cq/jseB/.DViTO1SpUnoCy.dxcOf8hyfitGq5V0yhgXccxzlqm2o.I3SlDJ0'
-#  remote_user: root
  
- 
-  - name: Add a new user named provision
+  - name: Add a new user named {{username}}
     user:
-         name=provision
-         password="F7jde(Fr8r3kfr484vfje@#$458jF%(ff"
+         name: "{{username}}"
+ #         password: "{{password}}"
  
-  - name: Add provision user to the sudoers
+  - name: Add {{username}} user to the sudoers
     copy:
-         dest: "/etc/sudoers.d/provision"
-         content: "provision  ALL=(ALL)  ALL"
-  - name: Create a 2048-bit SSH key for user jsmith in ~jsmith/.ssh/id_rsa
+         dest: "/etc/sudoers.d/{{username}}"
+         content: "{{username}}  ALL=(ALL)  ALL"
+
+
+  - name: Create a 2048-bit SSH key for user {{username}} ~/.ssh/id_rsa
     user:
-         name: provision
+         name: "{{username}}"
          generate_ssh_key: yes
          ssh_key_bits: 2048
-         ssh_key_file: .ssh/id_rsa i
+         ssh_key_file: .ssh/id_rsa 
 
 
 
   - name: cat ~/.ssh/id_rda.pub
     become: true
-    become_user: provision
-    script: cat ~/.ssh/id_rda.pub
+    become_user: "{{username}}"
+    shell: cat ~/.ssh/id_rsa.pub
     register: out
 
   - debug: var=out.stdout_lines

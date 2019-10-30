@@ -1,6 +1,6 @@
 ---
 
-- hosts: dbservers
+- hosts: servers
   remote_user: root
   gather_facts: no
 
