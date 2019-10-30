@@ -27,3 +27,9 @@
     register: out
 
   - debug: var=out.stdout_lines
+
+
+  - pause:
+     prompt: "PLEASE COPY THAT KEY  ⇈ ⇈ ⇈ ⇈  ⇈ ⇈ ⇈ ⇈ ⇈ ⇈ ⇈ ⇈ ⇈ ⇈ ⇈ ⇈ ⇈ ⇈ ⇈ ⇈ ⇈ ⇈ ⇈ ⇈ ⇈ ⇈ ⇈ ⇈ ⇈ ⇈ ⇈ ⇈ ⇈ ⇈ ⇈ ⇈ ⇈    TO BITBUCKET  I WILL WAIT 2 MINUTES"
+     minutes: 2
+     echo: yes
