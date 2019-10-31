@@ -1,17 +1,17 @@
 ---
 
-- name: Replace string to http://ftp.hosteurope.de/mirror/archive.mariadb.org//mariadb-${PV}/source/mariadb-${PV}.tar.gz 
+- name: Replace string to http://ftp.hosteurope.de/mirror/archive.mariadb.org/mariadb-${PV}/source/mariadb-${PV}.tar.gz 
   lineinfile:
     dest: '{{build_directory}}/layers/meta-sicom/recipes-support/mariadb/mariadb_10.2.18.inc'
     regexp: '^(.*)https://(.*)$'
-    line: 'SRC_URI = "http://ftp.hosteurope.de/mirror/archive.mariadb.org//mariadb-${PV}/source/mariadb-${PV}.tar.gz \ '
-    backrefs: yes
+    line: 'SRC_URI = "http://ftp.hosteurope.de/mirror/archive.mariadb.org/mariadb-${PV}/source/mariadb-${PV}.tar.gz \ '
+    backrefs: no
 
 
-    #- name: run script ./layers/meta-sicom/run.build linux-mainline
-    #  become: Yes
-    #  become_user: "{{username}}"
-    #  shell: cd {{build_directory}}; cat ./layers/meta-sicom/setup-env-centos.sh > ./layers/meta-sicom/run.build; cat ./layers/meta-sicom/build-for-dtd.sh >> ./layers/meta-sicom/run.build; chmod +x ./layers/meta-sicom/run.build; ./layers/meta-sicom/run.build linux-mainline &
+- name: run script ./layers/meta-sicom/run.build linux-mainline
+  become: Yes
+  become_user: "{{username}}"
+  shell: cd {{build_directory}}; ./layers/meta-sicom/setup-env-centos.sh #> ./layers/meta-sicom/run.build; cat ./layers/meta-sicom/build-for-dtd.sh >> ./layers/meta-sicom/run.build; chmod +x ./layers/meta-sicom/run.build; ./layers/meta-sicom/run.build linux-mainline &
     #  ignore_errors: yes
 
 
@@ -23,7 +23,7 @@
 - name: run ./layers/meta-sicom/run.build sicom-pos
   become: Yes
   become_user: "{{username}}"
-  shell: cd {{build_directory}};  cat ./layers/meta-sicom/setup-env-centos.sh > ./layers/meta-sicom/run.build; cat ./layers/meta-sicom/build-for-pos.sh >> ./layers/meta-sicom/run.build; ./layers/meta-sicom/run.build sicom-pos
+  shell: cd {{build_directory}};  cat ./layers/meta-sicom/setup-env-centos.sh > ./layers/meta-sicom/run.build; cat ./layers/meta-sicom/build-for-pos.sh >> ./layers/meta-sicom/run.build; chmod +x ./layers/meta-sicom/run.build; ./layers/meta-sicom/run.build sicom-pos
   ignore_errors: yes
 
 
