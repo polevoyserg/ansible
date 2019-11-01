@@ -20,7 +20,7 @@
 
 
 
-  - name: cat ~/.ssh/id_rda.pub
+  - name: cat ~/.ssh/id_rsa.pub
     become: true
     become_user: "{{username}}"
     shell: cat ~/.ssh/id_rsa.pub

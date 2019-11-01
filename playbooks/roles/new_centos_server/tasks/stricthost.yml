@@ -1,0 +1,35 @@
+---
+
+
+
+- name: create config file
+  delegate_to: localhost
+  become: Yes
+  become_user: jenkins
+  file: path=~/.ssh/config state=touch
+
+- name: ~/.ssh/config
+  delegate_to: localhost
+  become: Yes
+  become_user: jenkins
+  blockinfile:
+    dest: ~/.ssh/config
+    block: |
+      host=*
+      StrictHostKeyChecking no
+
+
+      #- name: create config file
+      #  delegate_to: localhost
+      #  become: Yes
+      #  become_user: jenkins
+      #  file: path=~/.ssh/config state=touch
+
+  #- name: Insert/Update
+  #  delegate_to: localhost
+  #  blockinfile:
+  #    path: ~/.ssh/config
+  #    block: |
+  #      host=*
+#      StrictHostKeyChecking no
+
