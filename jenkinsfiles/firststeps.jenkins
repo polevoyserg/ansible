@@ -1,7 +1,7 @@
 #!groovy
 // Check ub1 properties
 // Define variable
-def myVariable = "127.0.0.1"
+def myVariable = "$server"
 
 // Print variable
 pipeline {
