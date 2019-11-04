@@ -1,24 +1,60 @@
 #!groovy
-// Check ub1 properties
-properties([disableConcurrentBuilds()])
-
 pipeline {
-    agent { 
-        label 'master'
-        }
-    options {
-        buildDiscarder(logRotator(numToKeepStr: '10', artifactNumToKeepStr: '10'))
-        timestamps()
+    agent any
+
+    //These params will be displayed for user input when running a build, They are also accepted by the API
+    parameters {
+        string(name: 'BUILD_HOSTNAME', description: 'The name of the server to build (from Mdb)')
+        string(name: 'ILO_IP', description: 'The IP address for the server ilo')
+        booleanParam(name: 'skipOneView', description: 'Skip the OneView stage?', defaultValue: false)
+        booleanParam(name: 'skipBuild', description: 'Skip the Build stage?', defaultValue: false)
     }
+
     stages {
-        stage("First step") {
+        stage('Init') {
             steps {
-                sh 'ssh jenkins@127.0.0.1 \'hostname\''
+                sh 'git status'
+                echo "Building $BUILD_HOSTNAME (Ilo: $ILO_IP)"
+                echo "skipOneView: ${params.skipOneView}"
+                echo "skipBuild: ${params.skipBuild}"
+                
+                //The sshagent block will run any ssh aware commands as the user specified
+                sshagent(['ssh_user']) {
+                    //To run a remote ssh command you will need to setup ssh keys (https://www.digitalocean.com/community/tutorials/how-to-configure-ssh-key-based-authentication-on-a-linux-server)
+                    sh "ssh -o StrictHostKeyChecking=no ssh_user@127.0.0.1 -C \"cd ~/Project; git pull\""
+                }
             }
         }
-        stage("Second step") {
+        stage('OneView') {
+            //The when block control is this stage should be run base don the params given
+            when {
+                expression {
+                    params.skipOneView == false
+                }
+            }
             steps {
-                sh 'ssh jenkins@127.0.0.1 \'uptime\''
+                //The withCredentials block places a username and password securely into the environment
+                withCredentials([usernamePassword(credentialsId: 'vault_user', passwordVariable: 'pfs222', usernameVariable: 'root')]) {
+                    sshagent(['ssh_user']) {
+                        //Here we invoke ansible remotely using ssh. We use the password retreived from withCredentials to feed to ansible and unlock the vault. 
+                        //To do this we first set the password as an environment variable and then used passmgr.py to echo this out
+                        sh "ssh -o StrictHostKeyChecking=no ssh_user@127.0.0.1 -C \"export VAULTPASS=$VAULTPASS; cd ~/Project; ansible-playbook oneview.yml --vault-password-file passmgr.sh -i inventory.py -l $BUILD_HOSTNAME --extra-vars 'ilo_addr=$ILO_IP'\""
+                    }
+                }
+            }
+        }
+        stage('Build') {
+            when {
+                expression {
+                    params.skipBuild == false
+                }
+            }
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'vault_user', passwordVariable: 'VAULTPASS', usernameVariable: 'VAULTUSER')]) {
+                    sshagent(['ssh_user']) {
+                        sh "ssh -o StrictHostKeyChecking=no ssh_user@127.0.0.1 -C \"export VAULTPASS=$VAULTPASS; cd ~/Ansibuild; ansible-playbook build.yml --vault-password-file passmgr.sh -i inventory.py -l $BUILD_HOSTNAME --extra-vars 'ilo_addr=$ILO_IP skip_pxe=yes custom_disk_layout=UEFI_2Disk_General'\""
+                    }
+                }
             }
         }
     }
