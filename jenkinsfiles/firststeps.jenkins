@@ -4,8 +4,8 @@ pipeline {
 
     //These params will be displayed for user input when running a build, They are also accepted by the API
     parameters {
-        string(name: '127.0.0.1', description: 'The name of the server to build (from Mdb)')
-        string(name: '127.0.0.1', description: 'The IP address for the server ilo')
+        string(name: 'BUILD_HOSTNAME', description: 'The name of the server to build (from Mdb)')
+        string(name: 'ILO_IP', description: 'The IP address for the server ilo')
         booleanParam(name: 'skipOneView', description: 'Skip the OneView stage?', defaultValue: false)
         booleanParam(name: 'skipBuild', description: 'Skip the Build stage?', defaultValue: false)
     }
