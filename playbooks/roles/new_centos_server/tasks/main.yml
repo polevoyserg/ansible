@@ -1,16 +1,16 @@
 ---
 
- - include_tasks: stricthost.yml 
+# - include_tasks: stricthost.yml 
 
 
  - include_tasks: hosts.yml
- - include_tasks: hostname.yml
-   when: change_hostname == "true"
+   # - include_tasks: hostname.yml
+   #   when: change_hostname == "true"
 
- - include_tasks: useradd.yml
- - include_tasks: yum.yml
- - include_tasks: create_path.yml
- - include_tasks: selinux.yml
- - include_tasks: gitconfig.yml
- - include_tasks: patch.yml
- - include_tasks: run_build.yml
+   # - include_tasks: useradd.yml
+   # - include_tasks: yum.yml
+   # - include_tasks: create_path.yml
+   # - include_tasks: selinux.yml
+   # - include_tasks: gitconfig.yml
+   # - include_tasks: patch.yml
+   # - include_tasks: run_build.yml
