@@ -1,25 +1,16 @@
 #!groovy
 // Check ub1 properties
-properties([disableConcurrentBuilds()])
+// Define variable
+def myVariable = "$server"
 
+// Print variable
 pipeline {
-    agent { 
-        label 'master'
-        }
-    options {
-        buildDiscarder(logRotator(numToKeepStr: '10', artifactNumToKeepStr: '10'))
-        timestamps()
+  agent any
+  stages {
+    stage ("Print variable") {
+      steps {
+        echo "My variable is ${myVariable}"
+      }
     }
-    stages {
-        stage("First step") {
-            steps {
-                sh 'ssh root@127.0.0.1 \'hostname\''
-            }
-        }
-        stage("Second step") {
-            steps {
-                sh 'ssh root@127.0.0.1 \'uptime\''
-            }
-        }
-    }
+  }
 }
