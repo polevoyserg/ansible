@@ -9,7 +9,7 @@
 
  #- include_tasks: useradd.yml
  
- # - include_tasks: yum.yml
+  - include_tasks: yum.yml
  
  #- include_tasks: create_path.yml
  
