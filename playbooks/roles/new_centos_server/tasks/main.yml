@@ -7,7 +7,7 @@
  - include_tasks: hostname.yml
    when: change_hostname == "true"
 
- - include_tasks: useradd.yml
+ #- include_tasks: useradd.yml
  
  # - include_tasks: yum.yml
  
