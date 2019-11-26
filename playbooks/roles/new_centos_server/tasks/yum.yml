@@ -4,60 +4,12 @@
   yum: name=epel-release state=latest
 
 - name: Install preconfigure packages
-  yum: pkg={{item}} state=present disable_gpg_check=yes update_cache=yes
-  with_items:
-  - gawk
-  - git
-  - wget
-  - vim
-  - make
-  - wget
-  - tar 
-  - bzip2
-  - gzip
-  - python3
-  - unzip
-  - perl
-  - patch
-  - diffutils
-  - diffstat
-  - cpp
-  - gcc
-  - gcc-c++
-  - glibc-devel
-  - texinfo
-  - chrpath 
-  - socat 
-  - SDL-devel 
-  - xterm 
-  - perl-Thread-Queue 
-  - zlib-devel 
-  - docbook* 
-  - xmlto
-  - texinfo 
-  - gpm 
-  - kernel-headers 
-  - kernel-devel 
-  - pypy 
-  - python-mako 
-  - bc 
-  - ncurses-devel 
-  - ncurses-libs.i686 
-  - ncurses-devel.i686 
-  - scl-utils 
-  - policycoreutils-python 
-  - libgfortran4 
-  - python34 
-  - java
-  - libicu-devel 
-  - libunwind-devel 
-  - python3
-  - telnet
-  - mtr
-  - net-tools
-  - screen
-  - open-vm-tools
-
+  yum: pkg: ['gawk', 'git', 'wget', 'vim', 'make', 'wget', 'tar', 'bzip2', 'gzip', 'python3', 'unzip', 'perl', 
+'patch', 'diffutils', 'diffstat', 'cpp', 'gcc', 'gcc-c++', 'glibc-devel', 'texinfo', 'chrpath', 'socat', 'SDL-devel', 'xterm', 'perl-Thread-Queue', 
+'zlib-devel', 'docbook*', 'xmlto', 'texinfo', 'gpm', 'kernel-headers', 'kernel-devel', 'pypy', 'python-mako', 'bc', 'ncurses-devel', 'ncurses-libs.i686', 
+'ncurses-devel.i686', 'scl-utils', 'policycoreutils-python', 'libgfortran4', 'python34', 'java', 'libicu-devel', 'libunwind-devel', 'python3', 'telnet', 
+'mtr', 'net-tools', 'screen', 'open-vm-tools'] state=present disable_gpg_check=yes update_cache=yes
+  
 - name: install the 'Development tools' package group
   yum:
     name: "@Development tools"
