@@ -4,7 +4,7 @@
 
 - name: Install preconfigure packages
   yum:
-    name: name: "{{ packages }}"
+    name: "{{ packages }}"
   vars:
     packages:
     - gawk
