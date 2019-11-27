@@ -67,10 +67,12 @@
 
 
 - name: install devtoolset-7 devtoolset-7-libatomic-devel
-  yum: pkg={{item}} state=present disable_gpg_check=yes update_cache=yes
-  with_items:
-   - devtoolset-7 
-   - devtoolset-7-libatomic-devel
+  yum: 
+    name: "{{ packages }}"
+  vars:
+    packages:
+    - devtoolset-7 
+    - devtoolset-7-libatomic-devel
 
 - name: yum-clean-metadata
   command: yum clean metadata
@@ -86,6 +88,8 @@
 
 
 - name: install devtoolset-7 devtoolset-7-libatomic-devel
-  yum: pkg={{item}} state=present disable_gpg_check=yes update_cache=yes
-  with_items:
-   - centos-release-scl
+  yum: 
+    name: "{{ packages }}"
+  vars:
+    packages:
+    - centos-release-scl
