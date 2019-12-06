@@ -4,7 +4,7 @@
   lineinfile:
     dest: '{{build_directory}}/layers/meta-sicom/recipes-support/mariadb/mariadb_10.2.18.inc'
     regexp: '^(.*)https://(.*)$'
-    line: 'SRC_URI = "http://ftp.hosteurope.de/mirror/archive.mariadb.org/mariadb-${PV}/source/mariadb-${PV}.tar.gz \ '
+    line: 'SRC_URI = "http://ftp.hosteurope.de/mirror/archive.mariadb.org/mariadb-10.2.18/source/mariadb-10.2.18.tar.gz \ '
     backrefs: no
 
 
