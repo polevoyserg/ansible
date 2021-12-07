@@ -4,7 +4,71 @@ jobs:
   Explore-GitHub-Actions:
     runs-on: ubuntu-latest
     steps:
-      - run: touch 123; scp 123 root@178.150.65.210:.
+      - run: name: MasterCI
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    name: Build and Deploy
+
+    steps:
+      - uses: actions/checkout@master
+
+      - name: Bucket actions
+        uses: actions/setup-node@v1
+        with:
+          node-version: 8
+      - run: npm i
+      - run: npm run test
+      - run: npm run generate
+      
+      - name: Publish
+        uses: nogsantos/scp-deploy@master
+        with:
+          src: ./dist/*
+          host: 178.150.65.210
+          remote: /tmp
+          port: 22
+          user: root
+          key: "-----BEGIN RSA PRIVATE KEY-----
+MIIEowIBAAKCAQEA3I0vWQ9P79/Msp0Hp7H7CPJvvmdGOPEuoVrMzneqYMb6s0iI
+eWybZUAmIJ2Cl6oQ2MbNV1i1WFyVk1tfrFxSXnWttUZaDYeVMGlvoRlWXn69Lhen
+ZFZ6HYjJSdvykvnPS1Hh6XlPaLP+8f2ykp36xvyrsXZlDinPB1EIUL5VgaU3YA/F
+B+0QiLJvBNxTRPkLhugVIIESr4BlxXcVskSND18xDTixvO4zZ8l4S2fTAOTb2+1K
+zgI/LRiMHRQKNEBJFWVHLS6tPgPigYAgbZdUsj/akU/kT5bmB1X/FpEeuIE43Wzv
+sOohaoOp6ObmohGeuWm7CYNsaR8OAWW8io4X/wIDAQABAoIBAQCnBeioencgAo1D
+arYkYh3pTaggOpesgcG9gkT9yxPlTGsJINHxmrUn/WeiZYZDkxBFCnDxSAW1kA/a
+U2Vl41ihnl7ZnBiQjHAIBKD8EHMfBr3/zPwAeZjrCu7dF0th0PsSYEVEiZEAiud0
+nZsBe9Axp6Hit/WZv0HAmbZBZ5LbpTneeRBVkF+DVBOGgP7mrC2YhUW1n6cYCSUV
+sru+IcNNCpjcvC1TYLWgvE9FpaPDbFb7+3KoOk5ghWU4tgC81+H0gPtR3t5MNILD
+jaQMMHtv7oZeWRmFpH0pBuaRHxRkosZkABQrszDpT7VTyGCqExFFhHIaKXnMHHse
+QFE9Y/f5AoGBAPa8YzeNck68JORMa5MVlXieXGAQrvCOeX439AA0CWzL7r5qOHk2
+PTWSI02/V42YpL4SPpaMhSJUaOTry7zjbkZN1jqcWgrO0KXWjYClb/AaoCjrYVOM
+2YU65mw7B3EYa0aI5EHGe0zUWIpI9kDf4/MACR4ZYn3YCvHopSbfAkeTAoGBAOTV
+HUx1MFirOo9FpR0C6mt4qv6y6sJm7YgGtPhy3steKelnlw17/57+/caitoyyUImc
+Qh5NW40aMdwH/FzWTYGemqPiMBS8m7VoTwCEYRpytn8HDk3A6z1QRpRWe23STxe6
+M77pqEhweFjIr2P3DMqfgtqv7vs8r50sbENhO5llAoGAGHPdJWFIRdNRmKqWMrJ9
+6MFRCFg+7ipAkii7btW5ZWXkmExwolqkwE1mYEspQygwk4G9YDA29YsGBkH0JBkq
+EZ+fLpnWNqH+faEAzxIWQOZynvuM3rnjyNdohKto9mVkJE5myLoB+EBHMhU/Cnjl
+32xOewQrBavGkejrjSmm0S8CgYByDgrZZfuf5lB8wrDGYgKnaHCKHHFITfcMepNO
+1ipX4Oow7LHsRaal/+BLViR4whPEUv7djZ8ZGDpLuis9to7REVVwY7elTlCpvYDK
++DBR92UgsUqe1I4rdEyJeQVyOoWzhNpvyJRY7r39OqG4yJU2lQSqrVAHJzs8sryP
+ZPJIxQKBgEEDm3ErXOkKpqQRDYI9OaiYbO34JOr8C/X3Uyo42Y5z+wRs73H4Mfrm
+KvmoexcCaSsRnnSoZTqTANlxetORl3ROhNs/nN/gyGe56jh4bTS3AZCNteXkA3xh
+YxL6VWrZfSBjvPNVOpILJQ+C+TL31A141ehGCrtwSPtBjXW9UHhQ
+-----END RSA PRIVATE KEY-----
+"
+
+ 
+
+
+
+
       - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
       - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
       - name: Check out repository code
