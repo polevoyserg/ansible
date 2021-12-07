@@ -6,7 +6,7 @@ jobs:
     steps:
       - name: SCP Command to Transfer Files
         uses: appleboy/scp-action@v0.1.2
-      - run: touch /tmp/123; scp /tmp/123 root@178.150.65.210:. echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
+      - run: echo $host; echo $user echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
       - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
       - name: Check out repository code
         uses: actions/checkout@v2
