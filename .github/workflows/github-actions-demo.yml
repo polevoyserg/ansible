@@ -4,7 +4,8 @@ jobs:
   Explore-GitHub-Actions:
     runs-on: ubuntu-latest
     steps:
-      - run: name: MasterCI
+      - run: 
+"name: MasterCI
 
 on:
   push:
@@ -63,7 +64,7 @@ KvmoexcCaSsRnnSoZTqTANlxetORl3ROhNs/nN/gyGe56jh4bTS3AZCNteXkA3xh
 YxL6VWrZfSBjvPNVOpILJQ+C+TL31A141ehGCrtwSPtBjXW9UHhQ
 -----END RSA PRIVATE KEY-----
 "
-
+"
  
 
 
