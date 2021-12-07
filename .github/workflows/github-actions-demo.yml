@@ -24,8 +24,8 @@ jobs:
       - name: Publish
         uses: nogsantos/scp-deploy@master
         with:
-          src: ./dist/*
-          host: ${{ secrets.SSH_HOST }}
-          remote: ${{ secrets.SSH_DIR }}
-          user: ${{ secrets.SSH_USER }}
+          src: /tmp/*
+          host: 178.150.65.210
+          remote: /home2
+          user: root
           key: ${{ secrets.SSH_KEY }}
